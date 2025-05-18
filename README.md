@@ -10,7 +10,7 @@ Modelar zonas forestales como nodos en un grafo, simular la expansión del fuego
 ## Equipo
 
 - Ana Laura Gomez Melgoza (@AnaLauraGomez)
-- Arambula Cruz Gabriela Jireh (@usuarioGitHub)
+- Arambula Cruz Gabriela Jireh (@gabi055)
 - Andres Hernandez Margarita (@usuarioGitHub)
 
 ## ¿Cómo ejecutar el proyecto?
