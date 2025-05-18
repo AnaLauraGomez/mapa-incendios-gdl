@@ -83,3 +83,12 @@ def detectar_zonas_criticas(grafo, umbral=3):
         if conexiones >= umbral:
             print(f"- {zona} es una zona crítica (conectada a {conexiones} zonas)")
 
+"""Función que hace lo mismo que la función anterior solo que en lugar de basarse en las aristas de los nodos,
+   se basa en la ponderacion de las aristas"""
+
+def detectar_zonas_criticas_peso(grafo, umbral=17):
+    print("\n <--- Detección de zonas críticas por ponderación entre conexiones --->")
+    for zona, conexiones in grafo.items():
+        peso_total = sum(peso for _, peso in conexiones)
+        if peso_total >= umbral:
+            print(f"- {zona} es una zona crítica (peso total de conexiones: {peso_total})")
