@@ -42,17 +42,17 @@ def propagacion_bfs(grafo, inicio):
     cola = [inicio]
     visitados = []   #Lista para guardar las zonas ya visitadas
 
-    print("\n[Simulación BFS] El fuego empieza en:", inicio)
+    print("\n[Simulacion BFS] El fuego empieza en:", inicio)
 
     while cola:
         actual = cola.pop(0)  #Subimos el primer elemento de la cola
         if actual not in visitados:
-            print("El fuego ha llegado a: ", actual)
+            print("\nEl fuego ha llegado a: ", actual)
             visitados.append(actual)  #Marcamos la zona como visitada
 
             for vecino, peso in grafo[actual]:  #Conexiones de esa zona
                 if vecino not in visitados and vecino not in cola:
-                    print("Se propaga a: ", vecino, " , con peso: ", peso)
+                    print("\nSe propaga a: ", vecino, " , con peso: ", peso)
                     cola.append(vecino)  #Agregamos el vecino a la cola para despues
 
 #Algoritmo DFS (profundidad)
@@ -64,12 +64,12 @@ def propagacion_dfs(grafo, inicio, visitados=None):
         visitados = []  #Lista de zonas visitadas
 
     if inicio not in visitados:
-        print("El fuego ha llegado a: ", inicio)  
+        print("\nEl fuego ha llegado a: ", inicio)  
         visitados.append(inicio)  #Marcamos como visitada
 
         for vecino, peso in grafo[inicio]:  #Recorremos los vecinos
             if vecino not in visitados:
-                print("Se propaga a: ", vecino, " , con peso: ", peso) 
+                print("\nSe propaga a: ", vecino, " , con peso: ", peso) 
                 propagacion_dfs(grafo, vecino, visitados)  #Llamada recursiva para seguir por ese camino
 
 
@@ -77,18 +77,18 @@ def propagacion_dfs(grafo, inicio, visitados=None):
 #Una zona critica es aquella que esta conectada a muchas otras con un alto riesgo de propagación
 
 def detectar_zonas_criticas(grafo, umbral=3):
-    print("\n[Detección de zonas críticas]")
+    print("\n[Detección de zonas criticas]")
     for zona in grafo:
         conexiones = len(grafo[zona])  #Numero de vecinos
         if conexiones >= umbral:
-            print(f"- {zona} es una zona crítica (conectada a {conexiones} zonas)")
+            print(f"- {zona} es una zona critica (conectada a {conexiones} zonas)")
 
 """Función que hace lo mismo que la función anterior solo que en lugar de basarse en las aristas de los nodos,
    se basa en la ponderacion de las aristas"""
 
 def detectar_zonas_criticas_peso(grafo, umbral=17):
-    print("\n <--- Detección de zonas críticas por ponderación entre conexiones --->")
+    print("\n <--- Deteccion de zonas criticas por ponderacion entre conexiones --->")
     for zona, conexiones in grafo.items():
         peso_total = sum(peso for _, peso in conexiones)
         if peso_total >= umbral:
-            print(f"- {zona} es una zona crítica (peso total de conexiones: {peso_total})")
+            print(f"- {zona} es una zona critica (peso total de conexiones: {peso_total})")
