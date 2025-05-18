@@ -1,23 +1,85 @@
 #Definir la estructura del grafo, representado como diccionario
+"""
 grafo = {
     'Colomos': [('Primavera', 3), ('Huentitán', 6), ('Mirador', 7)],
     'Primavera': [('Colomos', 3), ('Huentitán', 5), ('Mirador', 4)],
     'Huentitán': [('Colomos', 6), ('Primavera', 5), ('Mirador', 8)],
     'Mirador': [('Colomos', 7), ('Primavera', 4), ('Huentitán', 8)]
 }
+"""
 
 #Solo puse 4 zonas y conexiones entre ellas
 
-#Cada conexión entre dos zonas (una arista del grafo) tiene un peso numérico que representa qué tan fácil o difícil es que el fuego se propague entre esas dos zonas.
-
     #Ejemplo: 
     #Un incendio que inicia en Colomos: 
-    # Tardará moderadamente en llegar a Primavera (peso 4). 
-    # Tardará más en llegar a Huentitán (peso 5).
+    # Tardará moderadamente en llegar a Primavera (peso 3). 
+    # Tardará más en llegar a Huentitán (peso 6).
 
-   # | Peso | Significado                       | Ejemplo real                                    |
-    #| 1    | Propagación muy fácil             | Vegetación seca, sin barreras, muy cerca        |
-    #| 2–3  | Propagación fácil                 | Áreas densas de bosque, misma altitud           |
-    #| 4–5  | Propagación media                 | Algo de separación, caminos sin pavimentar      |
-    #| 6–7  | Propagación difícil               | Zona húmeda, con ríos, poca continuidad vegetal |
-    #| 8+   | Muy difícil o casi imposible      | Autopistas, zonas urbanas, cortafuegos          |
+   # | Peso | Significado                  
+    #| 1    | Propagación muy fácil            
+    #| 2–3  | Propagación fácil              
+    #| 4–5  | Propagación media                 
+    #| 6–7  | Propagación difícil               
+    #| 8+   | Muy difícil o casi imposible      
+
+#Función principal que crea el grafo con las zonas y conexiones
+#Cada zona es un nodo y cada conexión representa una posible ruta de propagación de fuego
+#Los numeros indican qué tan facil o dificil es que el fuego se propague por esa ruta
+def crear_grafo():
+    grafo = {
+        'Colomos': [('Primavera', 3), ('Huentitán', 6), ('Mirador', 7)],
+        'Primavera': [('Colomos', 3), ('Huentitán', 5), ('Mirador', 4)],
+        'Huentitán': [('Colomos', 6), ('Primavera', 5), ('Mirador', 8)],
+        'Mirador': [('Colomos', 7), ('Primavera', 4), ('Huentitán', 8)]
+    }
+    return grafo
+
+#Algoritmo BFS (anchura)
+#Simula cómo se propaga el fuego visitando primero los nodos mas cercanos
+#Utiliza una cola para recorrer los nodos en orden de aparicion
+
+def propagacion_bfs(grafo, inicio):
+    cola = [inicio]
+    visitados = []   #Lista para guardar las zonas ya visitadas
+
+    print("\n[Simulación BFS] El fuego empieza en:", inicio)
+
+    while cola:
+        actual = cola.pop(0)  #Subimos el primer elemento de la cola
+        if actual not in visitados:
+            print("El fuego ha llegado a: ", actual)
+            visitados.append(actual)  #Marcamos la zona como visitada
+
+            for vecino, peso in grafo[actual]:  #Conexiones de esa zona
+                if vecino not in visitados and vecino not in cola:
+                    print("Se propaga a: ", vecino, " , con peso: ", peso)
+                    cola.append(vecino)  #Agregamos el vecino a la cola para despues
+
+#Algoritmo DFS (profundidad)
+#Simula una propagacion mas profunda como si el fuego siguiera un solo camino primero
+#Utiliza recursion y una lista de visitados para no repetir zonas
+
+def propagacion_dfs(grafo, inicio, visitados=None):
+    if visitados is None:
+        visitados = []  #Lista de zonas visitadas
+
+    if inicio not in visitados:
+        print("El fuego ha llegado a: ", inicio)  
+        visitados.append(inicio)  #Marcamos como visitada
+
+        for vecino, peso in grafo[inicio]:  #Recorremos los vecinos
+            if vecino not in visitados:
+                print("Se propaga a: ", vecino, " , con peso: ", peso) 
+                propagacion_dfs(grafo, vecino, visitados)  #Llamada recursiva para seguir por ese camino
+
+
+#Funcion para detectar zonas criticas en el grafo
+#Una zona critica es aquella que esta conectada a muchas otras con un alto riesgo de propagación
+
+def detectar_zonas_criticas(grafo, umbral=3):
+    print("\n[Detección de zonas críticas]")
+    for zona in grafo:
+        conexiones = len(grafo[zona])  #Numero de vecinos
+        if conexiones >= umbral:
+            print(f"- {zona} es una zona crítica (conectada a {conexiones} zonas)")
+
