@@ -27,10 +27,19 @@ grafo = {
 #Los numeros indican qué tan facil o dificil es que el fuego se propague por esa ruta
 def crear_grafo():
     grafo = {
-        'Colomos': [('Primavera', 3), ('Huentitán', 6), ('Mirador', 7)],
-        'Primavera': [('Colomos', 3), ('Huentitán', 5), ('Mirador', 4)],
-        'Huentitán': [('Colomos', 6), ('Primavera', 5), ('Mirador', 8)],
-        'Mirador': [('Colomos', 7), ('Primavera', 4), ('Huentitán', 8)]
+        'Colomos': [('Primavera', 3), ('Huentitán', 6), ('Mirador', 7), ('Bomberos_PabloNeruda', 2), ('Bomberos_Central', 5)],
+        'Primavera': [('Colomos', 3), ('Huentitán', 5), ('Mirador', 4), ('Bomberos_Zapopan4', 3)],
+        'Huentitán': [('Colomos', 6), ('Primavera', 5), ('Mirador', 8), ('Bomberos_Zapopan2', 4), ('Bomberos_Base2', 5)],
+        'Mirador': [('Colomos', 7), ('Primavera', 4), ('Huentitán', 8), ('Bomberos_Central', 4)],
+
+        #Estaciones de bomberos
+        'Bomberos_Central': [('Colomos', 5), ('Mirador', 4)],
+        'Bomberos_Base2': [('Huentitán', 5)],
+        'Bomberos_PabloNeruda': [('Colomos', 2)],
+        'Bomberos_Zapopan1': [('Primavera', 4)],
+        'Bomberos_Zapopan2': [('Huentitán', 4)],
+        'Bomberos_Zapopan3': [('Primavera', 5)],
+        'Bomberos_Zapopan4': [('Primavera', 3)]
     }
     return grafo
 
