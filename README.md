@@ -15,7 +15,7 @@ Modelar zonas forestales como nodos en un grafo, simular la expansión del fuego
 
 ## ¿Cómo ejecutar el proyecto?
 Clona el repositorio:
-Abre GitBash y escribe: 
+Abre GitBash y escribe:
 
 git clone https://github.com/tuUsuario/mapa-incendios-gdl.git
 cd mapa-incendios-gdl
