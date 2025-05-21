@@ -1,23 +1,28 @@
-from simulacion import crear_grafo, propagacion_bfs, propagacion_dfs,detectar_zonas_criticas_peso
-from dijkstra import encontrar_ruta_mas_corta
+from simulacion import crear_grafo, propagacion_bfs, propagacion_dfs,detectar_zonas_criticas_peso, encontrar_ruta_mas_corta
+
+
 
 
 def main():
     grafo = crear_grafo()  #Creamos el grafo
     bosques = ['Colomos', 'Primavera', 'Huentitán', 'Mirador']
-    estaciones=['Cuartel Central', 'UEPCBJ','Estación1','Estación2','Estación3','Estación4']
+    estaciones=['Cuartel Central', 'UEPCBJ','Estacion1','Estacion2','Estacion3','Estacion4']
 
     while True:
         print("\nMapa de la red de bosques:\n")
         for zona, conexiones in grafo.items():
             if zona in bosques:
-                print(f"{zona}: {[f'{vecino} (peso: {peso})' for vecino, peso in conexiones]}")
+                print(f"{zona}: {[f'{vecino} (peso: {peso})' for vecino, peso in conexiones]}\n")
+        
+        for zona, conexiones in grafo.items():
+            if zona in estaciones:
+                print(f"{zona}: {[f'{vecino} (peso: {peso})' for vecino, peso in conexiones]}\n")
 
         print("\n <--- Simulacion de propagacion de fuego --->")
         print("1. Propagacion BFS")
         print("2. Propagacion DFS")
         print("3. Deteccion de zonas criticas")
-        print("4. Ruta más corta (Dijkstra)")
+        print("4. Ruta más corta entre estación de bomberos y bosque")
         print("5. Salir")
 
         opcion = input("Seleccione una opcion (1-5):\n")

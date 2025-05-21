@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+import networkx as nx
+
 #Definir la estructura del grafo, representado como diccionario
 """
 grafo = {
@@ -36,7 +39,7 @@ def crear_grafo():
         #Unidad Estatal de Protección Civil y Bomberos Jalisco 
         'UEPCBJ':[('Colomos',7),('Huentitán', 4),('Primavera', 3),('Mirador',6)],
         #Coordinación Municipal De Protección Civil Y Bomberos De Zapopan (Base 1) Oficinas Administrativas
-        'Estación1':[('Colomos',19),('Huentitán', 5),('Primavera', 2),('Mirador',9)],
+        'Estacion1':[('Colomos',19),('Huentitán', 5),('Primavera', 2),('Mirador',9)],
         #Base 2 Protección Civil y Bomberos Zapopan, Los Molinos
         'Estacion2':[('Colomos',4),('Huentitán', 3),('Primavera', 2),('Mirador',3)],
         #Base 3 Protección Civil y Bomberos Zapopan, Auditorio
@@ -109,3 +112,60 @@ def detectar_zonas_criticas_peso(grafo, umbral=15):
         peso_total = sum(peso for _, peso in conexiones)
         if peso_total > umbral:
             print(f"- {zona} es una zona critica (peso total de conexiones: {peso_total})")
+
+
+import heapq
+#función para encontrar la ruta más corta usando Dijkstra
+
+def encontrar_ruta_mas_corta(grafo, inicio, destino):
+    #inicializamos las distancias a infinito y el nodo de inicio a 0
+    distancias ={nodo: float("inf")for nodo in grafo}
+    distancias[inicio]=0
+    anteriores ={nodo: None for nodo in grafo}
+    cola=[(0, inicio)]
+
+    while cola:
+        distancia_actual, nodo_actual= heapq.heappop(cola)
+        for vecino, peso in grafo[nodo_actual]:
+            nueva_distancia=distancia_actual+peso
+            if nueva_distancia<distancias[vecino]:
+                distancias[vecino]=nueva_distancia
+                anteriores[vecino]=nodo_actual
+                heapq.heappush(cola, (nueva_distancia, vecino))
+
+    #reconstruir el camino
+    camino = []
+    actual = destino
+
+    while actual and actual !=inicio:
+        camino.insert(0, actual)
+        actual=anteriores[actual]
+    if actual==inicio:
+        camino.insert(0, inicio)
+
+        #mostrar resultads
+    if distancias[destino]==float("inf"):
+        print(f"\nNo hay ruta posible de {inicio}a{destino}.")
+    else:
+        print(f"\nRuta más corta de {inicio} a {destino}: {' -> '.join(camino)}")
+        print(f"Distancia total:{distancias[destino]}")
+    
+    #Vizualizar la ruta más corta
+    G = nx.Graph()
+    for nodo, conexiones in grafo.items():
+        for vecino, peso in conexiones:
+            G.add_edge(nodo, vecino, weight=peso)
+    pos = nx.spring_layout(G)
+   
+   #Dibujar el grafo
+    nx.draw(G, pos, with_labels=True, node_size=700, node_color='lightblue', font_size=10, font_weight='bold')
+    edge_labels = nx.get_edge_attributes(G, 'weight')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+
+    ruta_edges = [(camino[i], camino[i + 1]) for i in range(len(camino) - 1)]
+    nx.draw_networkx_edges(G, pos, edgelist=ruta_edges, edge_color='red', width=2)
+   
+    edge_labels_ruta = {(camino[i], camino[i + 1]): G[camino[i]][camino[i+1]]['weight'] for i in range(len(camino)-1)}
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels_ruta, font_color='green')
+    plt.title(f"Ruta más corta de {inicio} a {destino}")
+    plt.show()
