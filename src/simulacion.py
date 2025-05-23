@@ -1,58 +1,43 @@
 import matplotlib.pyplot as plt
 import networkx as nx
+import heapq
 
-#Definir la estructura del grafo, representado como diccionario
-"""
-grafo = {
-    'Colomos': [('Primavera', 3), ('Huentitán', 6), ('Mirador', 7)],
-    'Primavera': [('Colomos', 3), ('Huentitán', 5), ('Mirador', 4)],
-    'Huentitán': [('Colomos', 6), ('Primavera', 5), ('Mirador', 8)],
-    'Mirador': [('Colomos', 7), ('Primavera', 4), ('Huentitán', 8)]
-}
-"""
 
-#Solo puse 4 zonas y conexiones entre ellas
+# <---Función principal que crea el grafo con los bosques, estaciones de bomberos y conexiones ----->
+"""Cada zona es un nodo y cada conexión representa una arista entre nodos. Esta arista tiene un peso que indica la 
+   distancia entre los nodos(Distancia entres bosques y estaciones de bomberos).
+   El grafo es un diccionario donde cada clave es un nodo y su valor es una lista de tuplas que representan los nodos vecinos y el peso de la arista.
+   Las estaciones de bomberos están conectadas a los bosques y entre ellas, lo que permite simular la propagación del fuego y la respuesta de los bomberos."""
 
-    #Ejemplo: 
-    #Un incendio que inicia en Colomos: 
-    # Tardará más en llegar a Primavera (peso 3). 
-    # Tardará mucho menos en llegar a Huentitán (peso 5).
-
-"""Para aplica ponderación, hicimos uso de la formula inversa  simple donde
-   el peso de la arista es inversamente proporcional a la distancia entre los nodos.
-   Por lo tanto, a mayor distancia entre los nodos, menor será el peso de la arista."""    
-
-#Función principal que crea el grafo con las zonas y conexiones
-#Cada zona es un nodo y cada conexión representa una posible ruta de propagación de fuego
-#Los numeros indican qué tan facil o dificil es que el fuego se propague por esa ruta
 def crear_grafo():
     grafo = {
         #Bosques
-        'Colomos': [('Primavera', 3), ('Huentitán', 5), ('Mirador', 8)],
-        'Primavera': [('Colomos', 3), ('Huentitán', 1), ('Mirador', 2)],
-        'Huentitán': [('Colomos', 5), ('Primavera', 1), ('Mirador', 8)],
-        'Mirador': [('Colomos', 8), ('Primavera', 2), ('Huentitán', 8)],
+        'Colomos': [('Primavera', 4), ('Huentitán', 3), ('Mirador', 2)],
+        'Primavera': [('Colomos', 4), ('Huentitán', 8), ('Mirador', 7)],
+        'Huentitán': [('Colomos', 3), ('Primavera', 8), ('Mirador', 2)],
+        'Mirador': [('Colomos', 2), ('Primavera', 7), ('Huentitán', 2)],
 
         #Estaciones de bomberos conectadas a los bosques
         #Cuartel Central
-        'Cuartel Central':[('Colomos',11),('Huentitán', 6),('Primavera', 3),('Mirador',9)],
+        'Cuartel Central':[('Colomos',1),('Huentitán', 2),('Primavera', 4),('Mirador',2)],
         #Unidad Estatal de Protección Civil y Bomberos Jalisco 
-        'UEPCBJ':[('Colomos',7),('Huentitán', 4),('Primavera', 3),('Mirador',6)],
+        'UEPCBJ':[('Colomos',2),('Huentitán', 4),('Primavera', 4),('Mirador',2)],
         #Coordinación Municipal De Protección Civil Y Bomberos De Zapopan (Base 1) Oficinas Administrativas
-        'Estacion1':[('Colomos',19),('Huentitán', 5),('Primavera', 2),('Mirador',9)],
+        'Estacion1':[('Colomos',1),('Huentitán', 3),('Primavera', 5),('Mirador',2)],
         #Base 2 Protección Civil y Bomberos Zapopan, Los Molinos
-        'Estacion2':[('Colomos',4),('Huentitán', 3),('Primavera', 2),('Mirador',3)],
+        'Estacion2':[('Colomos',3),('Huentitán', 5),('Primavera', 7),('Mirador',4)],
         #Base 3 Protección Civil y Bomberos Zapopan, Auditorio
-        'Estacion3':[('Colomos',12),('Huentitán', 6),('Primavera', 2),('Mirador',14)],
+        'Estacion3':[('Colomos',1),('Huentitán', 2),('Primavera', 6),('Mirador',1)],
         #Coordinación Municipal De Protección Civil Y Bomberos De Zapopan (Base 4)
-        'Estacion4':[('Colomos',6),('Huentitán', 3),('Primavera', 4),('Mirador',4)]
+        'Estacion4':[('Colomos',2),('Huentitán', 5),('Primavera', 3),('Mirador',3)]
         
     }
     return grafo
 
-#Algoritmo BFS (anchura)
-#Simula cómo se propaga el fuego visitando primero los nodos mas cercanos
-#Utiliza una cola para recorrer los nodos en orden de aparicion
+# <--- Algoritmo BFS (anchura) --->
+"""Simula cómo se propaga el fuego visitando primero los nodos mas cercanos.
+   Utiliza una cola para recorrer los nodos en orden de aparición. 
+   Se utiliza una lista de visitados para evitar visitar la misma zona más de una vez."""
 
 def propagacion_bfs(grafo, inicio):
     bosques = ['Colomos', 'Primavera', 'Huentitán', 'Mirador']
@@ -76,9 +61,9 @@ def propagacion_bfs(grafo, inicio):
                     print("\nSe propaga a: ", vecino, " , con peso: ", peso)
                     cola.append(vecino)  #Agregamos el vecino a la cola para despues
 
-#Algoritmo DFS (profundidad)
-#Simula una propagacion mas profunda como si el fuego siguiera un solo camino primero
-#Utiliza recursion y una lista de visitados para no repetir zonas
+# <---Algoritmo DFS (profundidad)--->
+"""Simula una propagación más profunda como si el fuego siguiera un solo camino primero.
+   Utiliza recursión y una lista de visitados para no repetir zonas."""
 
 def propagacion_dfs(grafo, inicio, visitados=None):
     bosques = ['Colomos', 'Primavera', 'Huentitán', 'Mirador']
@@ -99,23 +84,27 @@ def propagacion_dfs(grafo, inicio, visitados=None):
                 propagacion_dfs(grafo, vecino, visitados)  #Llamada recursiva para seguir por ese camino
 
 
+# <--- Detección de zonas críticas por ponderación entre conexiones --->
+"""Detecta zonas criticas mediante las aristas de los nodos.
+    Si el peso total de las conexiones de un bosque es menor a un umbral dado, se considera una zona crítica,
+    ya que cuenta con una distancia corta a otras zonas aumentado la rapidez de la propagación.
+    La zona crítica es aquella que tiene un alto riesgo de propagación de fuego."""
 
-"""Función que detecta zonas criticas mediante las aristas de los nodos,
-   se basa en la ponderacion de las aristas. Una zona critica es aquella que tiene un peso total de conexiones menor a un umbral dado, la zona es
-   aquella que tiene un alto riesgo de propagación de fuego."""
-
-def detectar_zonas_criticas_peso(grafo, umbral=15):
+def detectar_zonas_criticas_peso(grafo, umbral=13):
     bosques = ['Colomos', 'Primavera', 'Huentitán', 'Mirador']
     print("\n <--- Deteccion de zonas criticas por ponderacion entre conexiones --->")
     for zona in bosques:
         conexiones = grafo.get(zona, [])
         peso_total = sum(peso for _, peso in conexiones)
-        if peso_total > umbral:
+        if peso_total < umbral:
             print(f"- {zona} es una zona critica (peso total de conexiones: {peso_total})")
 
 
-import heapq
-#función para encontrar la ruta más corta usando Dijkstra
+# <--- Algoritmo de Dijkstra para encontrar la ruta más corta entre dos nodos --->
+"""Busca la ruta más corta entre un bosque y una estación de bomberos.
+   Utiliza una cola de prioridad para explorar los nodos más cercanos primero.
+   Mantiene un registro de las distancias más cortas encontradas hasta el momento y reconstruye la ruta más corta al final.
+   Además de mostrar la ruta, también visualiza el grafo con la ruta y las distancias."""
 
 def encontrar_ruta_mas_corta(grafo, inicio, destino):
     #inicializamos las distancias a infinito y el nodo de inicio a 0
@@ -133,7 +122,7 @@ def encontrar_ruta_mas_corta(grafo, inicio, destino):
                 anteriores[vecino]=nodo_actual
                 heapq.heappush(cola, (nueva_distancia, vecino))
 
-    #reconstruir el camino
+    #Reconstruir el camino
     camino = []
     actual = destino
 
@@ -143,7 +132,7 @@ def encontrar_ruta_mas_corta(grafo, inicio, destino):
     if actual==inicio:
         camino.insert(0, inicio)
 
-        #mostrar resultads
+        #Mostrar resultados
     if distancias[destino]==float("inf"):
         print(f"\nNo hay ruta posible de {inicio}a{destino}.")
     else:
