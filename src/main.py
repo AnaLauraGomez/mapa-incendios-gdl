@@ -1,10 +1,8 @@
 from simulacion import crear_grafo, propagacion_bfs, propagacion_dfs,detectar_zonas_criticas_peso, encontrar_ruta_mas_corta
 
 
-
-
 def main():
-    grafo = crear_grafo()  #Creamos el grafo
+    grafo = crear_grafo() 
     bosques = ['Colomos', 'Primavera', 'Huentitán', 'Mirador']
     estaciones=['Cuartel Central', 'UEPCBJ','Estacion1','Estacion2','Estacion3','Estacion4']
 

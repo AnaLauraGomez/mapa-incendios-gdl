@@ -19,17 +19,17 @@ def crear_grafo():
 
         #Estaciones de bomberos conectadas a los bosques
         #Cuartel Central
-        'Cuartel Central':[('Colomos',1),('Huentitán', 2),('Primavera', 4),('Mirador',2)],
+        'Cuartel Central':[('Colomos',1),('Mirador',2)],
         #Unidad Estatal de Protección Civil y Bomberos Jalisco 
-        'UEPCBJ':[('Colomos',2),('Huentitán', 4),('Primavera', 4),('Mirador',2)],
+        'UEPCBJ':[('Colomos',2),('Mirador',2)],
         #Coordinación Municipal De Protección Civil Y Bomberos De Zapopan (Base 1) Oficinas Administrativas
-        'Estacion1':[('Colomos',1),('Huentitán', 3),('Primavera', 5),('Mirador',2)],
+        'Estacion1':[('Colomos',1)],
         #Base 2 Protección Civil y Bomberos Zapopan, Los Molinos
-        'Estacion2':[('Colomos',3),('Huentitán', 5),('Primavera', 7),('Mirador',4)],
+        'Estacion2':[('Colomos',3)],
         #Base 3 Protección Civil y Bomberos Zapopan, Auditorio
-        'Estacion3':[('Colomos',1),('Huentitán', 2),('Primavera', 6),('Mirador',1)],
+        'Estacion3':[('Colomos',1),('Mirador',1)],
         #Coordinación Municipal De Protección Civil Y Bomberos De Zapopan (Base 4)
-        'Estacion4':[('Colomos',2),('Huentitán', 5),('Primavera', 3),('Mirador',3)]
+        'Estacion4':[('Colomos',2),('Primavera', 3)]
         
     }
     return grafo
